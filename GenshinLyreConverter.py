@@ -62,6 +62,8 @@ def read_midi(filename):
 
 # 定义一个函数，将结果列表转换为txt文本，并写入文件中
 def write_txt(result, filename):
+    if not os.path.exists('./output/'):
+        os.makedirs('./output/')
     # 打开文件，以写入模式，并指定编码为utf-8
     file = open(filename + '.txt', 'w', encoding='utf-8')
     # 初始化当前拍数为0
@@ -101,7 +103,7 @@ def write_txt(result, filename):
                 else:
                     current_line += '(' + ''.join(current_keys) + ')'
                     current_keys = []
-        if time-current_time>=240:
+        if time-current_time>=240: #待修改
             current_line += ' '
         if beat != current_beat:
             times = beat - current_beat
@@ -121,11 +123,16 @@ def write_txt(result, filename):
     file.close()
 
 def input_file():
-    file_list = sorted(os.listdir('./midi'))
-    for i, file in enumerate(file_list):
-        print(f'{i + 1}. {file}')
-    selected = int(input('请选择一个文件（输入序号）：'))
-    return file_list[selected-1] if selected > 0 and selected <= len(file_list) else None
+    if not os.path.exists('midi'):
+        os.makedirs('midi')
+        return None
+    if os.listdir('midi'):
+        file_list = sorted(os.listdir('./midi'))
+        for i, file in enumerate(file_list):
+            print(f'{i + 1}. {file}')
+        selected = int(input('请选择一个文件（输入序号）：'))
+        return file_list[selected-1] if selected > 0 and selected <= len(file_list) else None
+    return None
 
 # 定义一个主函数，读取一个midi文件，转换为txt文本，并写入文件中
 def main(filename):
@@ -136,7 +143,11 @@ def main(filename):
 
 # 如果这个程序是直接运行的（而不是被导入的）
 if __name__ == '__main__':
+    print("请将需转换的midi文件放在同目录‘midi’文件夹中")
     # 获取用户输入的文件名
     filename = input_file()
+    if filename == None:
+        print('midi目录下没有文件，程序自动退出')
+        exit()
     # 调用主函数，传入文件名
     main(filename)
