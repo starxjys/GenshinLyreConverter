@@ -1,0 +1,2 @@
+# GenshinLyreConverter
+将midi文件转换为原神风物之风琴键盘谱
