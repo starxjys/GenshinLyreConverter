@@ -1,0 +1,5 @@
+/midi/*
+/output/*
+/temp/*
+test.py
+chatgpt_prompt.md
